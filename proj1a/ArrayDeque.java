@@ -59,7 +59,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (int i = first; i < first + size - 1; i ++) {
+        for (int i = first; i < first + size - 1; i++) {
             System.out.print(items[i % items.length]);
             System.out.print(" ");
         }
@@ -67,7 +67,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (size == 0) return null;
+        if (size == 0) {
+            return null;
+        }
         T itm = items[first];
         items[first] = null;
         first = moveFromFirst(1);
