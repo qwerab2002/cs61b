@@ -1,5 +1,5 @@
 public class Planet {
-    final double G = 6.67e-11;
+    private final double G = 6.67e-11;
     public double xxPos;
     public double yyPos;
     public double xxVel;
@@ -72,11 +72,11 @@ public class Planet {
         double Fy = 0;
         for (Planet p : allPlanets) {
             if (p != this) {
-                if (p.yyPos > this.yyPos) {
+               // if (p.yyPos > this.yyPos) {
                     Fy += this.calcForceExertedByY(p);
-                } else {
-                    Fy -= this.calcForceExertedByY(p);
-                }
+                //} else {
+                 //   Fy -= this.calcForceExertedByY(p);
+               // }
             }
         }
         return Fy;
