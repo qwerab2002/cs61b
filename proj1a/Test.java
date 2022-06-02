@@ -6,7 +6,7 @@ public class Test {
         lld.addLast(3);
         lld.addFirst(6);
         lld.addLast(99);
-        for (int i = 0; i < 20; i ++){
+        for (int i = 0; i < 20; i++) {
             lld.addLast(i);
             lld.printDeque();
         }
@@ -14,7 +14,7 @@ public class Test {
         lld.removeFirst();
         lld.removeLast();
         System.out.println(lld.size());
-        for (int i = 0; i < 20; i ++){
+        for (int i = 0; i < 20; i++) {
             lld.removeFirst();
             lld.printDeque();
 

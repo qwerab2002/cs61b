@@ -12,7 +12,9 @@ public class ArrayDeque<T> {
     }
 
     private void resize(int capacity) {
-        if (capacity < size) return;
+        if (capacity < size) {
+            return;
+        }
         T[] a = (T[]) new Object[capacity];
         if (first <= last()) {
             System.arraycopy(items, first, a, 0, size);
@@ -37,14 +39,14 @@ public class ArrayDeque<T> {
         }
         first = moveFromFirst(-1);
         items[first] = item;
-        size ++;
+        size++;
     }
 
     public void addLast(T item) {
         if (size == items.length) {
             this.resize(size * 2);
         }
-        size ++;
+        size++;
         items[last()] = item;
     }
 
@@ -65,27 +67,33 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (size == 0) return null;
         T itm = items[first];
         items[first] = null;
         first = moveFromFirst(1);
-        size --;
+        size--;
 
         if (items.length >= 16) {
-            while (size < items.length / 4)
+            while (size < items.length / 4) {
                 this.resize(items.length / 2);
+            }
         }
 
         return itm;
     }
 
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         T itm = items[last()];
         items[last()] = null;
-        size --;
+        size--;
 
         if (items.length >= 16) {
-            while (size < items.length / 4)
+            while (size < items.length / 4) {
                 this.resize(items.length / 2);
+            }
         }
 
         return itm;
