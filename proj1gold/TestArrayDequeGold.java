@@ -12,9 +12,11 @@ public class TestArrayDequeGold {
         while (true) {
             int add = StdRandom.uniform(100);
             int opr = StdRandom.uniform(4);
-            if (expected.size() < 5) {
+            if (expected.size() < 1) {
                 opr /= 2;
             }
+            Integer actualRmv = 0;
+            Integer expectedRmv = 0;
 
             switch (opr) {
                 case 0:
@@ -28,21 +30,19 @@ public class TestArrayDequeGold {
                     log += "addLast(" + add + ")\n";
                     break;
                 case 2:
-                    actual.removeFirst();
-                    expected.removeFirst();
+                    actualRmv = actual.removeFirst();
+                    expectedRmv = expected.removeFirst();
                     log += "removeFirst()\n";
                     break;
                 case 3:
-                    actual.removeLast();
-                    expected.removeLast();
+                    actualRmv = actual.removeLast();
+                    expectedRmv = expected.removeLast();
                     log += "removeLast()\n";
                     break;
                 default:
             }
 
-            if (expected.size() > 0) {
-                assertEquals(log, expected.get(0), actual.get(0));
-            }
+            assertEquals(log, expectedRmv, actualRmv);
         }
     }
 }
