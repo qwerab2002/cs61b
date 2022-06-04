@@ -27,11 +27,18 @@ public class TestPalindrome {
 
     @Test
     public void testIsPalindromeOBO() {
-        OffByOne offByOne = new OffByOne();
-        assertFalse(offByOne.isPalindrome("cat"));
-        assertFalse(offByOne.isPalindrome("racecar"));
-        assertTrue(offByOne.isPalindrome("flake"));
-        assertTrue(offByOne.isPalindrome("r"));
-        assertTrue(offByOne.isPalindrome(""));
+        CharacterComparator offByOne = new OffByOne();
+        assertFalse(palindrome.isPalindrome("cat", offByOne));
+        assertFalse(palindrome.isPalindrome("racecar", offByOne));
+        assertTrue(palindrome.isPalindrome("detrude", offByOne));
+        assertTrue(palindrome.isPalindrome("flake", offByOne));
+        assertTrue(palindrome.isPalindrome("r", offByOne));
+        assertTrue(palindrome.isPalindrome("", offByOne));
+    }
+    @Test
+    public void testIsPalindromeOBN() {
+        CharacterComparator ob5 = new OffByN(5);
+        assertTrue(palindrome.isPalindrome("binding", ob5));
+        assertFalse(palindrome.isPalindrome("racecar", ob5));
     }
 }

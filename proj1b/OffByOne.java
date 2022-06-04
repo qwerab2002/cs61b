@@ -4,7 +4,7 @@ public class OffByOne implements CharacterComparator {
         return x - y == 1 || y - x == 1;
     }
 
-    public boolean isPalindrome(String word) {
+    private boolean isPalindrome(String word) {
         if (word.length() <= 1) {
             return true;
         }
