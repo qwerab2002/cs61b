@@ -2,7 +2,6 @@ package hw2;
 import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 public class PercolationStats {
-    private int N;
     private double[] rates;
     private static double onePercolation(int N, PercolationFactory pf) {
         int count = 0;
@@ -19,7 +18,9 @@ public class PercolationStats {
         return (double) count / (N * N);
     }
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        this.N = N;
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
         rates = new double[T];
         for (int i = 0; i < T; i++) {
             rates[i] = onePercolation(N, pf);
