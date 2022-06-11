@@ -21,6 +21,10 @@ public class TestNiceSpreadOomage {
             return val;
         }
 
+        public boolean equals(Object o) {
+            return false;
+        }
+
         public static NiceSpreadOomage randomNiceSpreadOomage() {
             NiceSpreadOomage x = new NiceSpreadOomage();
             x.val = StdRandom.uniform(0, 1000000);

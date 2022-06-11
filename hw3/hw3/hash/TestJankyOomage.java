@@ -21,6 +21,10 @@ public class TestJankyOomage {
             return val;
         }
 
+        public boolean equals(Object o) {
+            return false;
+        }
+
         public static JankyOomage randomJankyOomage() {
             JankyOomage x = new JankyOomage();
             x.val = StdRandom.uniform(0, 2);
