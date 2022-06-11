@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  *  A hash table-backed Map implementation. Provides amortized constant time
  *  access to elements via get(), remove(), and put() in the best case.
@@ -61,19 +63,20 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        int hs = hash(key);
-        if (!buckets[hs].containsKey(key)) {
+        if (!buckets[hash(key)].containsKey(key)) {
             size++;
         }
         if (loadFactor() > MAX_LF) {
             this.resize(buckets.length * 2);
         }
+        int hs = this.hash(key);
         buckets[hs].put(key, value);
     }
 
     private void resize(int capacity) {
         MyHashMap<K, V> newHM = new MyHashMap<>();
         newHM.buckets = new ArrayMap[capacity];
+        newHM.clear();
         for (K key: keySet()) {
             newHM.put(key, this.get(key));
         }
@@ -125,20 +128,22 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public static void main(String[] args) {
-        MyHashMap<String, Integer> bstmap = new MyHashMap<>();
-        bstmap.put("hello", 5);
-        bstmap.put("cat", 10);
-        bstmap.put("fish", 22);
-        bstmap.put("zebra", 90);
-        Integer rm = bstmap.remove("dog");
-        Integer rm2 = bstmap.remove("hello");
-        System.out.println(rm);
-        System.out.println(rm2);
-
-        for (String s : bstmap) {
-            System.out.println(s);
+        MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
+        for (int i = 0; i <64; i++) {
+            b.put("hi" + i, 1);
+            System.out.println(null != b.get("hi" + i) && b.containsKey("hi" + i));
+        }
+        System.out.println(b.get("hi63"));
+        System.out.println(b.hash("hi63"));
+        System.out.println(b.buckets[127].size);
+        /*
+        for (int i = 0; i < b.buckets.length; i++) {
+            System.out.println(i);
+            for (String s : b.buckets[i].keySet())
+                System.out.print(s);
+            System.out.println();
         }
 
-
+         */
     }
 }
