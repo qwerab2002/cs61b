@@ -39,7 +39,7 @@ public class SimpleOomage implements Oomage {
             return red + green + blue;
         } else {
             int diffVal = 255 / 5 + 1;
-            return red + green * diffVal + blue * diffVal * diffVal;
+            return (red + green * diffVal + blue * diffVal * diffVal) / 5;
         }
     }
 
