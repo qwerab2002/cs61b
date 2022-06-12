@@ -170,11 +170,11 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (size == 0) {
             return null;
         }
+        T item = contents[1].item();
         swap(1, size);
-        T item = contents[size].item();
         contents[size] = null;
         size--;
-        if (size > 0) {
+        if (size > 1) {
             sink(1);
         }
         return item;
@@ -200,15 +200,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public void changePriority(T item, double priority) {
         for (int i = 1; i <= size; i++) {
-            if (getNode(i).item().equals(item)) {
-                double originalPrt = getNode(i).myPriority;
-                getNode(i).myPriority = priority;
+            Node node = getNode(i);
+            if (node.item().equals(item)) {
+                double originalPrt = node.myPriority;
+                node.myPriority = priority;
                 if (originalPrt < priority) {
                     sink(i);
                 } else {
                     swim(i);
                 }
-                break;
+                return;
             }
         }
     }
