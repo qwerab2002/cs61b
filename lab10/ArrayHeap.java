@@ -167,6 +167,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        if (size == 0) {
+            return null;
+        }
         swap(1, size);
         T item = contents[size].item();
         contents[size] = null;
@@ -325,6 +328,22 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         assertEquals("x5", pq.contents[5].myItem);
         assertEquals("x3", pq.contents[6].myItem);
         assertEquals("x7", pq.contents[7].myItem);
+    }
+    @Test
+    public void testChange() {
+        ArrayHeap<String> pq = new ArrayHeap<>();
+        for (int i = 1; i <= 9; i += 1) {
+            pq.insert("x" + i, i);
+        }
+        // Change root's priority to a large value.
+
+        System.out.println("PQ before sinking:");
+        System.out.println(pq);
+
+        pq.changePriority("x1", 10);
+        pq.removeMin();
+        System.out.println("PQ after sinking:");
+        System.out.println(pq);
     }
 
     @Test
