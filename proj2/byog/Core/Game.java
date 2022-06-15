@@ -93,7 +93,7 @@ public class Game {
 
     }
     public TETile[][] loadGame() {
-        ter.initialize(WIDTH, HEIGHT);
+        //ter.initialize(WIDTH, HEIGHT);
         File f = new File("./world.ser");
         if (f.exists()) {
             try {
@@ -185,7 +185,7 @@ public class Game {
 
     //generate map
     private TETile[][] generateWorld() {
-        ter.initialize(WIDTH, HEIGHT);
+        //ter.initialize(WIDTH, HEIGHT);
         TETile[][] world = new TETile[WIDTH][HEIGHT];
 
         for (int x = 0; x < WIDTH; x++) {
@@ -194,7 +194,7 @@ public class Game {
             }
         }
 
-        int N = RandomUtils.uniform(rand,5, 10);
+        int N = RandomUtils.uniform(rand, 5, 10);
         generateRoom(N);
         links = new WeightedQuickUnionUF(N);
         for (Room r : rooms) {
