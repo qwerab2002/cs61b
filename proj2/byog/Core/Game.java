@@ -194,7 +194,7 @@ public class Game {
             }
         }
 
-        int N = rand.nextInt(5, 10);
+        int N = RandomUtils.uniform(rand,5, 10);
         generateRoom(N);
         links = new WeightedQuickUnionUF(N);
         for (Room r : rooms) {
@@ -206,20 +206,20 @@ public class Game {
         return world;
     }
     private void generatePlayer(TETile[][] world) {
-        int xChar = rand.nextInt(1, WIDTH - 1);
-        int yChar = rand.nextInt(1, HEIGHT - 1);
-        while (!world[xChar][yChar].equals(Tileset.FLOOR)) {
-            xChar = rand.nextInt(1, WIDTH - 1);
-            yChar = rand.nextInt(1, HEIGHT - 1);
+        int xPlayer = RandomUtils.uniform(rand, 1, WIDTH - 1);
+        int yPlayer = RandomUtils.uniform(rand, 1, HEIGHT - 1);
+        while (!world[xPlayer][yPlayer].equals(Tileset.FLOOR)) {
+            xPlayer = RandomUtils.uniform(rand, 1, WIDTH - 1);
+            yPlayer = RandomUtils.uniform(rand, 1, HEIGHT - 1);
         }
-        player = new Position(xChar, yChar);
-        world[xChar][yChar] = Tileset.PLAYER;
+        player = new Position(xPlayer, yPlayer);
+        world[xPlayer][yPlayer] = Tileset.PLAYER;
     }
     private void generateRoom(int N) {
         rooms = new Room[N];
         for (int i = 0; i < N; i++) {
             while (true) {
-                int width = rand.nextInt(5, WIDTH / 5);
+                int width = RandomUtils.uniform(rand, 5, WIDTH / 5);
                 int height = RandomUtils.poisson(rand, HEIGHT / 3);
                 while (height >= HEIGHT) {
                     height = RandomUtils.poisson(rand, HEIGHT / 3);
