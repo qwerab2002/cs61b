@@ -1,8 +1,6 @@
-package hw2;
-
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-public class Percolation {
+public class Percolation_verbose {
     private int[] grids;
     private WeightedQuickUnionUF openings;
     private int N;
@@ -12,7 +10,7 @@ public class Percolation {
     private int bottomRowCount;
     private int numOpen;
     private boolean isPercolated;
-    public Percolation(int N) {
+    public Percolation_verbose(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException();
         }
