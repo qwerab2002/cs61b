@@ -205,7 +205,7 @@ public class Game {
         Save sv = new Save();
         sv.player = this.player;
         sv.world = world;
-        File f = new File("./world.ser");
+        File f = new File("./world.txt");
         try {
             if (!f.exists()) {
                 f.createNewFile();
@@ -225,7 +225,7 @@ public class Game {
     }
     public TETile[][] loadGame() {
         //ter.initialize(WIDTH, HEIGHT);
-        File f = new File("./world.ser");
+        File f = new File("./world.txt");
         if (f.exists()) {
             try {
                 FileInputStream fs = new FileInputStream(f);
