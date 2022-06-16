@@ -6,7 +6,8 @@ import byog.TileEngine.Tileset;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import edu.princeton.cs.introcs.StdDraw;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -547,11 +548,5 @@ public class Game {
             boolean ySeparate = (y1 > y4) || (y2 < y3);
             return (!xSeparate) && (!ySeparate);
         }
-    }
-    public static void main(String[] args) {
-        Game game = new Game();
-        ter.initialize(WIDTH, HEIGHT);
-        TETile[][] world = game.playWithInputString("l");
-        ter.renderFrame(world);
     }
 }
