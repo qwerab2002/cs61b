@@ -4,6 +4,9 @@ import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.introcs.StdDraw;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,6 +22,8 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
+    public static final int M_WIDTH = 400;
+    public static final int M_HEIGHT = 600;
     private Random rand;
     private Room[] rooms;
     private Position player;
@@ -28,8 +33,133 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+        drawMenu();
+        StdDraw.enableDoubleBuffering();
+        TETile[][] world;
+        while (true) {
+            if (!StdDraw.hasNextKeyTyped()) {
+                continue;
+            }
+            char keyStroke = StdDraw.nextKeyTyped();
+            StdDraw.enableDoubleBuffering();
+            if (keyStroke == 'q' || keyStroke == 'Q') {
+                System.exit(0);
+            } else if (keyStroke == 'l' || keyStroke == 'L') {
+                ter.initialize(WIDTH, HEIGHT);
+                world = loadGame();
+                ter.renderFrame(world);
+                break;
+            } else if (keyStroke == 'n' || keyStroke == 'N') {
+                String sd = getSeed();
+                long seed = Long.parseLong(sd);
+                ter.initialize(WIDTH, HEIGHT);
+                rand = new Random(seed);
+                world = generateWorld();
+                ter.renderFrame(world);
+                break;
+            }
+        }
+        makeMoves(world);
     }
 
+    private void makeMoves(TETile[][] world) {
+        boolean colon = false;
+        while (true) {
+            mouseTip(world);
+            if (!StdDraw.hasNextKeyTyped()) {
+                continue;
+            }
+            char keyStroke = StdDraw.nextKeyTyped();
+            if (keyStroke == ':') {
+                colon = true;
+                continue;
+            }
+            if (colon && (keyStroke == 'q' || keyStroke == 'Q')) {
+                saveGame(world);
+                System.exit(0);
+            }
+            Set<Character> moves = Set.of('a', 'A', 's', 'S', 'd', 'D', 'w', 'W');
+            if (moves.contains(keyStroke)) {
+                keyStroke = Character.toLowerCase(keyStroke);
+                moveOnce(world, keyStroke);
+            }
+            ter.renderFrame(world);
+            colon = false;
+        }
+    }
+    private void mouseTip(TETile[][] world) {
+        ter.renderFrame(world);
+        int x = (int) StdDraw.mouseX();
+        int y = (int) StdDraw.mouseY();
+        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
+            return;
+        }
+        if (world[x][y].equals(Tileset.FLOOR)) {
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(0, HEIGHT - 1, "Floor");
+        } else if (world[x][y].equals(Tileset.WALL)) {
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(0, HEIGHT - 1, "Wall");
+        } else if (world[x][y].equals(Tileset.NOTHING)) {
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(0, HEIGHT - 1, "");
+        } else if (world[x][y].equals(Tileset.PLAYER)) {
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(0, HEIGHT - 1, "Player");
+        } else if (world[x][y].equals(Tileset.LOCKED_DOOR)) {
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(0, HEIGHT - 1, "Locked door");
+        }
+
+        StdDraw.show();
+        StdDraw.pause(10);
+    }
+    private String getSeed() {
+        String sd = "";
+        drawFrame(sd);
+        while (true) {
+            if (!StdDraw.hasNextKeyTyped()) {
+                continue;
+            }
+            char keyStroke = StdDraw.nextKeyTyped();
+            if (keyStroke == 's' || keyStroke == 'S') {
+                break;
+            }
+            if (Character.isDigit(keyStroke)) {
+                sd += keyStroke;
+            }
+            drawFrame(sd);
+        }
+        StdDraw.pause(500);
+        return sd;
+    }
+    private void drawFrame(String sd) {
+        StdDraw.clear(Color.BLACK);
+        Font font = new Font("Monaco", Font.BOLD, 30);
+        Font smallFont = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(font);
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT * 2 / 3, "ENTER SEED (NUMBER)");
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT * 2 / 3 - 30, "END WITH (s)");
+        StdDraw.setFont(smallFont);
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT / 3, sd);
+        StdDraw.show();
+    }
+
+    private void drawMenu() {
+        StdDraw.setCanvasSize(M_WIDTH, M_HEIGHT);
+        Font font = new Font("Monaco", Font.BOLD, 30);
+        Font smallFont = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setXscale(0, M_WIDTH);
+        StdDraw.setYscale(0, M_HEIGHT);
+        StdDraw.clear(Color.BLACK);
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.setFont(font);
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT * 2 / 3, "CS61B BYOG");
+        StdDraw.setFont(smallFont);
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT / 3, "New Game (n)");
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT / 3 - 20, "Load Game (l)");
+        StdDraw.text(M_WIDTH / 2, M_HEIGHT / 3 - 40, "Quit (q)");
+    }
     /**
      * Method used for autograding and testing the game code. The input string will be a series
      * of characters (for example, "n123sswwdasdassadwas", "n123sss:q", "lwww". The game should
@@ -420,7 +550,8 @@ public class Game {
     }
     public static void main(String[] args) {
         Game game = new Game();
-        TETile[][] world = game.playWithInputString("n1234s");
+        ter.initialize(WIDTH, HEIGHT);
+        TETile[][] world = game.playWithInputString("l");
         ter.renderFrame(world);
     }
 }
